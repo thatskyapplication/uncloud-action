@@ -34,6 +34,7 @@ jobs:
         with:
           image-tag: my-app:latest
           uncloud-profile: my-app
+          compise-files: compose.yaml
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           server-user: ${{ secrets.SERVER_USER }}
           server-host: ${{ secrets.SERVER_HOST }}
