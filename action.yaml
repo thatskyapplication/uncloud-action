@@ -1,4 +1,4 @@
-name: Deploy to Uncloud
+name: Deploy via Uncloud
 description: Deploy Docker images to Uncloud servers via SSH
 author: thatskyapplication
 branding:
@@ -11,9 +11,9 @@ inputs:
   uncloud-profile:
     description: One or more profiles to enable (space-separated).
     required: false
-  compose-file:
-    description: Path to your compose file. Uncloud's default is used if not specified.
-    required: false
+  compose-files:
+    description: One or more Compose files (space-separated).
+    required: true
   ssh-private-key:
     description: SSH private key for server access.
     required: true
@@ -55,20 +55,20 @@ runs:
         SERVER_HOST: ${{ inputs.server-host }}
       run: uc image push "$IMAGE_TAG" --connect "$SERVER_USER@$SERVER_HOST"
 
-    - name: Deploy to Uncloud
+    - name: Deploy via Uncloud
       shell: bash
       env:
         SERVER_USER: ${{ inputs.server-user }}
         SERVER_HOST: ${{ inputs.server-host }}
-        COMPOSE_FILE: ${{ inputs.compose-file }}
+        COMPOSE_FILES: ${{ inputs.compose-files }}
         UNCLOUD_PROFILE: ${{ inputs.uncloud-profile }}
         RECREATE: ${{ inputs.recreate }}
       run: |
         DEPLOY_ARGS=(--connect "$SERVER_USER@$SERVER_HOST")
 
-        if [ -n "$COMPOSE_FILE" ]; then
-          DEPLOY_ARGS+=(--file "$COMPOSE_FILE")
-        fi
+        for file in $COMPOSE_FILES; do
+          DEPLOY_ARGS+=(--file "$file")
+        done
 
         if [ -n "$UNCLOUD_PROFILE" ]; then
           DEPLOY_ARGS+=(--profile "$UNCLOUD_PROFILE")

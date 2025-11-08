@@ -5,7 +5,7 @@ GitHub Action to deploy Docker images via Uncloud. First-party support is the go
 ## Basic example
 
 ```YAML
-name: Deploy to Production
+name: Deploy to production
 on:
   push:
     branches:
@@ -26,13 +26,13 @@ jobs:
         with:
           context: .
           file: apps/my-app/Dockerfile
-          tags: myapp:latest
+          tags: my-app:latest
           load: true
 
-      - name: Deploy to Uncloud
+      - name: Deploy via Uncloud
         uses: thatskyapplication/uncloud-action@v1
         with:
-          image-tag: myapp:latest
+          image-tag: my-app:latest
           uncloud-profile: my-app
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           server-user: ${{ secrets.SERVER_USER }}
