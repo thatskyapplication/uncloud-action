@@ -1,0 +1,83 @@
+name: Deploy to Uncloud
+description: Deploy Docker images to Uncloud servers via SSH
+author: thatskyapplication
+branding:
+  icon: cloud
+  color: black
+inputs:
+  image-tag:
+    description: Docker image tag to deploy.
+    required: true
+  uncloud-profile:
+    description: One or more profiles to enable (space-separated).
+    required: false
+  compose-file:
+    description: Path to your compose file. Uncloud's default is used if not specified.
+    required: false
+  ssh-private-key:
+    description: SSH private key for server access.
+    required: true
+  server-user:
+    description: SSH username for the server.
+    required: true
+  server-host:
+    description: Server hostname.
+    required: true
+  recreate:
+    description: Recreate containers even if their configuration and image haven't changed.
+    required: false
+    default: "false"
+runs:
+  using: composite
+  steps:
+    - name: Install Uncloud CLI
+      shell: bash
+      run: |
+        curl --fail --show-error --silent https://get.uncloud.run/install.sh | sh
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+    - name: Set up SSH agent
+      uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ inputs.ssh-private-key }}
+
+    - name: Add server to known hosts
+      shell: bash
+      env:
+        SERVER_HOST: ${{ inputs.server-host }}
+      run: ssh-keyscan -H "$SERVER_HOST" >> ~/.ssh/known_hosts
+
+    - name: Push image to server
+      shell: bash
+      env:
+        IMAGE_TAG: ${{ inputs.image-tag }}
+        SERVER_USER: ${{ inputs.server-user }}
+        SERVER_HOST: ${{ inputs.server-host }}
+      run: uc image push "$IMAGE_TAG" --connect "$SERVER_USER@$SERVER_HOST"
+
+    - name: Deploy to Uncloud
+      shell: bash
+      env:
+        SERVER_USER: ${{ inputs.server-user }}
+        SERVER_HOST: ${{ inputs.server-host }}
+        COMPOSE_FILE: ${{ inputs.compose-file }}
+        UNCLOUD_PROFILE: ${{ inputs.uncloud-profile }}
+        RECREATE: ${{ inputs.recreate }}
+      run: |
+        DEPLOY_ARGS=(--connect "$SERVER_USER@$SERVER_HOST")
+
+        if [ -n "$COMPOSE_FILE" ]; then
+          DEPLOY_ARGS+=(--file "$COMPOSE_FILE")
+        fi
+
+        if [ -n "$UNCLOUD_PROFILE" ]; then
+          DEPLOY_ARGS+=(--profile "$UNCLOUD_PROFILE")
+        fi
+
+        if [ "$RECREATE" = "true" ]; then
+          DEPLOY_ARGS+=(--recreate)
+        fi
+
+        DEPLOY_ARGS+=(--yes)
+
+        uc deploy "${DEPLOY_ARGS[@]}"
