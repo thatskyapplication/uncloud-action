@@ -1,0 +1,15 @@
+name: Bug report
+description: Report an issue.
+type: Bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking time out of your day to help make this project better for all! ☁️
+        You can join the Uncloud Discord server [here](https://discord.gg/WsVk8QJBxs) to discuss your issue if that's more your style.
+  - type: textarea
+    attributes:
+      label: Bug report
+      description: Please describe your issue in detail! The more information you provide, the eaiser its remediation will be.
+    validations:
+      required: true

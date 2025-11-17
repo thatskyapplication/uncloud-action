@@ -1,0 +1,15 @@
+name: Feature request
+description: Suggest an idea.
+type: Feature
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking time out of your day to help make this project better for all! 🩵
+        You can join the Uncloud Discord server [here](https://discord.gg/WsVk8QJBxs) to discuss your feature request if that's more your style.
+  - type: textarea
+    attributes:
+      label: Feature request
+      description: Type out your idea.
+    validations:
+      required: true
