@@ -1,6 +1,6 @@
 # uncloud-action
 
-GitHub Action to deploy Docker images via Uncloud. First-party support is the goal!
+GitHub Action to deploy Docker images via [Uncloud](https://github.com/psviderski/uncloud). First-party support is the goal!
 
 ## Basic example
 
