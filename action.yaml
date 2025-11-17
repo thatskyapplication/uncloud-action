@@ -37,9 +37,7 @@ runs:
       shell: bash
       env:
         VERSION: ${{ inputs.version }}
-      run: |
-        curl --fail --show-error --silent https://get.uncloud.run/install.sh | sh
-        echo "$HOME/.local/bin" >> $GITHUB_PATH
+      run: curl --fail --show-error --silent https://get.uncloud.run/install.sh | sh
 
     - name: Set up SSH agent
       uses: webfactory/ssh-agent@v0.9.0
