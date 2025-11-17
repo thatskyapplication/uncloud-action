@@ -1,5 +1,5 @@
 name: Deploy via Uncloud
-description: Deploy Docker images to Uncloud servers via SSH
+description: Deploy Docker images via Uncloud.
 author: thatskyapplication
 branding:
   icon: cloud
@@ -27,11 +27,16 @@ inputs:
     description: Recreate containers even if their configuration and image haven't changed.
     required: false
     default: "false"
+  version:
+    description: Version to use for the Uncloud CLI.
+    required: false
 runs:
   using: composite
   steps:
     - name: Install Uncloud CLI
       shell: bash
+      env:
+        VERSION: ${{ inputs.version }}
       run: |
         curl --fail --show-error --silent https://get.uncloud.run/install.sh | sh
         echo "$HOME/.local/bin" >> $GITHUB_PATH
