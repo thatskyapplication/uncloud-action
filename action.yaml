@@ -8,12 +8,12 @@ inputs:
   image-tag:
     description: Docker image tag to deploy.
     required: true
+  compose-files:
+    description: One or more Compose files (space-separated). Required unless `push-only` is `true`.
+    required: false
   uncloud-profile:
     description: One or more profiles to enable (space-separated).
     required: false
-  compose-files:
-    description: One or more Compose files (space-separated).
-    required: true
   ssh-private-key:
     description: SSH private key for server access.
     required: true
@@ -30,6 +30,10 @@ inputs:
   version:
     description: Version to use for the Uncloud CLI.
     required: false
+  push-only:
+    description: Does not deploy; only pushes the image to the server.
+    required: false
+    default: "false"
 runs:
   using: composite
   steps:
@@ -59,6 +63,7 @@ runs:
       run: uc image push "$IMAGE_TAG" --connect "$SERVER_USER@$SERVER_HOST"
 
     - name: Deploy via Uncloud
+      if: inputs.push-only != "true"
       shell: bash
       env:
         SERVER_USER: ${{ inputs.server-user }}
@@ -67,6 +72,11 @@ runs:
         UNCLOUD_PROFILE: ${{ inputs.uncloud-profile }}
         RECREATE: ${{ inputs.recreate }}
       run: |
+        if [ -z "$COMPOSE_FILES" ]; then
+          echo "::error::No compose files detected. At least one is required when deploying."
+          exit 1
+        fi
+
         DEPLOY_ARGS=(--connect "$SERVER_USER@$SERVER_HOST")
 
         for file in $COMPOSE_FILES; do
