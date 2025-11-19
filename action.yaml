@@ -72,7 +72,7 @@ runs:
         RECREATE: ${{ inputs.recreate }}
       run: |
         if [ -z "$COMPOSE_FILES" ]; then
-          echo "::error::No compose files detected. At least one is required when deploying.
+          echo "::error::No compose files detected. At least one is required when deploying."
           exit 1
         fi
 
