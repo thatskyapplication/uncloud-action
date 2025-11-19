@@ -9,7 +9,7 @@ inputs:
     description: Docker image tag to deploy.
     required: true
   compose-files:
-    description: One or more Compose files (space-separated). Required unless `push-only` is `true``.
+    description: One or more Compose files (space-separated). Required unless `push-only` is `true`.
     required: false
   uncloud-profile:
     description: One or more profiles to enable (space-separated).
