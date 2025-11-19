@@ -8,11 +8,11 @@ inputs:
   image-tag:
     description: Docker image tag to deploy.
     required: true
+  compose-files:
+    description: One or more Compose files (space-separated). Required unless `push-only` is `true``.
+    required: false
   uncloud-profile:
     description: One or more profiles to enable (space-separated).
-    required: false
-  compose-files:
-    description: One or more Compose files (space-separated).
     required: false
   ssh-private-key:
     description: SSH private key for server access.
@@ -30,9 +30,10 @@ inputs:
   version:
     description: Version to use for the Uncloud CLI.
     required: false
-  deploy:
-    description: If set, this will deploy via Uncloud. Otherwise the image will be pushed without further action.
+  push-only:
+    description: Does not deploy; only pushes the image to the server.
     required: false
+    default: "false"
 runs:
   using: composite
   steps:
@@ -62,7 +63,7 @@ runs:
       run: uc image push "$IMAGE_TAG" --connect "$SERVER_USER@$SERVER_HOST"
 
     - name: Deploy via Uncloud
-      if: inputs.deploy == "true"
+      if: inputs.push-only != "true"
       shell: bash
       env:
         SERVER_USER: ${{ inputs.server-user }}

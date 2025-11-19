@@ -37,9 +37,8 @@ jobs:
         uses: thatskyapplication/uncloud-action@v2
         with:
           image-tag: my-app:latest
-          deploy: true
-          uncloud-profile: my-app
           compose-files: compose.yaml
+          uncloud-profile: my-app
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           server-user: ${{ secrets.SERVER_USER }}
           server-host: ${{ secrets.SERVER_HOST }}
@@ -50,13 +49,14 @@ jobs:
 
 ### Pushing only the image
 
-To push an image to a server without deploying, omit `deploy` (or set it to `false`).
+To push an image to a server without deploying, set `push-only: true`.
 
 ```YAML
-- name: Deploy via Uncloud
+- name: Push image to server
   uses: thatskyapplication/uncloud-action@v2
   with:
     image-tag: my-app:latest
+    push-only: true
     ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
     server-user: ${{ secrets.SERVER_USER }}
     server-host: ${{ secrets.SERVER_HOST }}
