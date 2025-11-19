@@ -13,7 +13,7 @@ inputs:
     required: false
   compose-files:
     description: One or more Compose files (space-separated).
-    required: true
+    required: false
   ssh-private-key:
     description: SSH private key for server access.
     required: true
@@ -71,6 +71,11 @@ runs:
         UNCLOUD_PROFILE: ${{ inputs.uncloud-profile }}
         RECREATE: ${{ inputs.recreate }}
       run: |
+        if [ -z "$COMPOSE_FILES" ]; then
+          echo "::error::No compose files detected. At least one is required when deploying.
+          exit 1
+        fi
+
         DEPLOY_ARGS=(--connect "$SERVER_USER@$SERVER_HOST")
 
         for file in $COMPOSE_FILES; do
