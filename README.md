@@ -4,6 +4,10 @@ GitHub Action to deploy Docker images via [Uncloud](https://github.com/psvidersk
 
 ## Basic example
 
+### Deploying
+
+This is a full flow!
+
 ```YAML
 name: Deploy to production
 on:
@@ -16,7 +20,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -30,15 +34,30 @@ jobs:
           load: true
 
       - name: Deploy via Uncloud
-        uses: thatskyapplication/uncloud-action@v1
+        uses: thatskyapplication/uncloud-action@v2
         with:
           image-tag: my-app:latest
+          deploy: true
           uncloud-profile: my-app
-          compise-files: compose.yaml
+          compose-files: compose.yaml
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           server-user: ${{ secrets.SERVER_USER }}
           server-host: ${{ secrets.SERVER_HOST }}
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           API_KEY: ${{ secrets.API_KEY }}
+```
+
+### Pushing only the image
+
+To push an image to a server without deploying, omit `deploy` (or set it to `false`).
+
+```YAML
+- name: Deploy via Uncloud
+  uses: thatskyapplication/uncloud-action@v2
+  with:
+    image-tag: my-app:latest
+    ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    server-user: ${{ secrets.SERVER_USER }}
+    server-host: ${{ secrets.SERVER_HOST }}
 ```
