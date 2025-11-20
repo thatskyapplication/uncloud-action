@@ -63,7 +63,7 @@ runs:
       run: uc image push "$IMAGE_TAG" --connect "$SERVER_USER@$SERVER_HOST"
 
     - name: Deploy via Uncloud
-      if: inputs.push-only != "true"
+      if: inputs.push-only != 'true'
       shell: bash
       env:
         SERVER_USER: ${{ inputs.server-user }}
