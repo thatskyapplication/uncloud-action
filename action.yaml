@@ -44,7 +44,7 @@ runs:
       run: curl --fail --show-error --silent https://get.uncloud.run/install.sh | sh
 
     - name: Set up SSH agent
-      uses: webfactory/ssh-agent@v0.9.0
+      uses: webfactory/ssh-agent@v0.10.0
       with:
         ssh-private-key: ${{ inputs.ssh-private-key }}
 
