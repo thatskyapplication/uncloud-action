@@ -34,7 +34,7 @@ jobs:
           load: true
 
       - name: Deploy via Uncloud
-        uses: thatskyapplication/uncloud-action@6e8df783e6dedeb2416d9e15e8b6cfd21ab60e50 # v1.2.2.
+        uses: thatskyapplication/uncloud-action@898b95231b74d735a044b9aaea91eb321419b5d9 # v1.2.3.
         with:
           image-tag: my-app:latest
           compose-files: compose.yaml
@@ -53,7 +53,7 @@ To push an image to a server without deploying, set `push-only: true`.
 
 ```YAML
 - name: Push image to server
-  uses: thatskyapplication/uncloud-action@6e8df783e6dedeb2416d9e15e8b6cfd21ab60e50 # v1.2.2.
+  uses: thatskyapplication/uncloud-action@898b95231b74d735a044b9aaea91eb321419b5d9 # v1.2.3.
   with:
     image-tag: my-app:latest
     push-only: true
