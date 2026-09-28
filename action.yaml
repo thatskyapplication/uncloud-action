@@ -83,9 +83,9 @@ runs:
           DEPLOY_ARGS+=(--file "$file")
         done
 
-        if [ -n "$UNCLOUD_PROFILE" ]; then
-          DEPLOY_ARGS+=(--profile "$UNCLOUD_PROFILE")
-        fi
+        for profile in $UNCLOUD_PROFILE; do
+          DEPLOY_ARGS+=(--profile "$profile")
+        done
 
         if [ "$RECREATE" = "true" ]; then
           DEPLOY_ARGS+=(--recreate)
