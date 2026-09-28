@@ -4,6 +4,8 @@ GitHub Action to deploy Docker images via [Uncloud](https://github.com/psvidersk
 
 ## Basic example
 
+Replace `<commit-sha>` with the full commit SHA of a [release](https://github.com/thatskyapplication/uncloud-action/releases).
+
 ### Deploying
 
 This is a full flow!
@@ -34,7 +36,7 @@ jobs:
           load: true
 
       - name: Deploy via Uncloud
-        uses: thatskyapplication/uncloud-action@898b95231b74d735a044b9aaea91eb321419b5d9 # v1.2.3.
+        uses: thatskyapplication/uncloud-action@<commit-sha> # vX.Y.Z.
         with:
           image-tag: my-app:latest
           compose-files: compose.yaml
@@ -53,7 +55,7 @@ To push an image to a server without deploying, set `push-only: true`.
 
 ```YAML
 - name: Push image to server
-  uses: thatskyapplication/uncloud-action@898b95231b74d735a044b9aaea91eb321419b5d9 # v1.2.3.
+  uses: thatskyapplication/uncloud-action@<commit-sha> # vX.Y.Z.
   with:
     image-tag: my-app:latest
     push-only: true
